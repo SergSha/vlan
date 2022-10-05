@@ -1,0 +1,146 @@
+---
+# tasks file for vlan
+
+- name: Stop Firewalld Service If Running One
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+  when: (ansible_os_family == "RedHat") and (ansible_facts.services["firewalld.service"] is defined) and (ansible_facts.services["firewalld.service"].state == "running")
+#  when: ansible_os_family == "RedHat"
+
+- name: All Redhat Servers | install traceroute redhat
+  yum:
+    name: traceroute
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: All Debian Servers | install traceroute debian
+  apt:
+    name: traceroute
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: All Servers | delete default routes
+  command: ip route del default
+  when: (ansible_hostname == "office1Router") or (ansible_hostname == "office1Server") or (ansible_hostname == "office2Router") or (ansible_hostname == "office2Server")
+
+- name: inetRouter | Set up NAT
+  block:
+  - name: install iptables
+    yum:
+      name:
+      - iptables
+      - iptables-services
+      state: present
+      update_cache: true
+
+  - name: inetRouter | comment lines with icmp-host-prohibited
+    replace:
+      path: /etc/sysconfig/iptables
+      regexp: '^(.*)icmp-host-prohibited(.*)$'
+      replace: '#\1'
+    notify: iptables start and enable
+    tags:
+    - comment-icmp-host-prohibited
+
+  - name: inetRouter | add masquerade
+    command: iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+    tags: 
+    - add-masquerade
+
+  - name: inetRouter | set up route
+    copy:
+      src: inetRouter-route-eth1
+      dest: /etc/sysconfig/network-scripts/route-eth1
+      owner: root
+      group: root
+      mode: 0644
+    notify: network restart redhat
+  when: ansible_hostname == "inetRouter"
+
+- name: All Routers | set up forward packages across routers
+  lineinfile:
+    path: /etc/sysctl.d/01-forwarding.conf
+    line: net.ipv4.conf.all.forwarding=1
+    owner: root
+    group: root
+    mode: '0644'
+    create: yes
+  notify: sysctl setting
+  when: "'routers' in group_names"
+  
+- name: centralRouter | Setup network setting
+  block:
+  - name: centralRouter | disable default route
+    lineinfile:
+      path: /etc/sysconfig/network-scripts/ifcfg-eth0
+      line: DEFROUTE=no
+
+  - name: centralRouter | add default gateway
+    lineinfile:
+      path: /etc/sysconfig/network-scripts/ifcfg-eth1
+      line: GATEWAY=192.168.255.1
+
+  - name: centralRouter | set up route
+    copy:
+      src: centralRouter-route-{{ item }}
+      dest: /etc/sysconfig/network-scripts/route-{{ item }}
+      owner: root
+      group: root
+      mode: 0644
+    loop:
+    - "eth5"
+    - "eth6"
+    notify: network restart redhat
+  when: (ansible_hostname == "centralRouter")
+
+- name: centralServer | Setup network setting
+  block:
+  - name: centralServer | disable default route
+    lineinfile:
+      path: /etc/sysconfig/network-scripts/ifcfg-eth0
+      line: DEFROUTE=no
+
+  - name: centralServer | add default gateway for centralServer
+    lineinfile:
+      path: /etc/sysconfig/network-scripts/ifcfg-eth1
+      line: GATEWAY=192.168.0.1
+    notify: network restart redhat
+  when: ansible_hostname == "centralServer"
+
+- name: office1Router | set up route on 
+  lineinfile:
+    path: /etc/netplan/50-vagrant.yaml
+    insertafter: '^(.*)192.168.255.10(.*)$'
+    line: "      routes:\n      - to: 0.0.0.0/0\n        via: 192.168.255.9"
+  notify: netplan apply ubuntu
+  when: ansible_hostname == "office1Router"
+
+- name: office2Router | set up route
+  lineinfile:
+    path: /etc/network/interfaces
+    insertafter: '^(.*)192.168.255.6(.*)$'
+    line: "      gateway 192.168.255.5"
+  notify: network restart debian
+  when: ansible_hostname == "office2Router"
+
+- name: office1Server | set up route
+  lineinfile:
+    path: /etc/netplan/50-vagrant.yaml
+    insertafter: '^(.*)192.168.2.130(.*)$'
+    line: "      routes:\n      - to: 0.0.0.0/0\n        via: 192.168.2.129"
+  notify: netplan apply ubuntu
+  when: ansible_hostname == "office1Server"
+
+- name: office2Server | set up route
+  lineinfile:
+    path: /etc/network/interfaces
+    insertafter: '^(.*)192.168.1.2(.*)$'
+    line: "      gateway 192.168.1.1"
+  notify: network restart debian
+  when: ansible_hostname == "office2Server"
+
+- include_tasks: vpn.yml
+
+- include_tasks: ras.yml

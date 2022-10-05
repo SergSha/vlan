@@ -8,7 +8,7 @@ MACHINES = {
     #:public => {:ip => '10.10.10.1', :adapter => 1},
     :net => [
       {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
-      {ip: '192.168.50.10', adapter: 8},
+      {ip: '192.168.50.11', adapter: 8},
     ]
   },
   :centralRouter => {
@@ -17,7 +17,7 @@ MACHINES = {
     :net => [
       {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
       {ip: '192.168.0.1', adapter: 3, netmask: "255.255.255.240", virtualbox__intnet: "dir-net"},
-      {ip: '192.168.50.11', adapter: 8},
+      {ip: '192.168.50.12', adapter: 8},
     ]
   },
   :testServer1 => {

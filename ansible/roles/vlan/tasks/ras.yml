@@ -1,0 +1,128 @@
+---
+# tasks file for vlan
+
+- name: rasserver | Configure for RAS server
+  block: 
+  - name: rasserver | install eady-rsa
+    yum:
+      name:
+      - easy-rsa
+      state: present
+
+  - name: rasserver | Initialize pki
+    command: /usr/share/easy-rsa/3.0.8/easyrsa init-pki
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki"
+  
+  - name: rasserver | Build CA key
+    shell: echo 'rasvpn' | /usr/share/easy-rsa/3.0.8/easyrsa build-ca nopass
+#    command: /usr/share/easy-rsa/3.0.8/easyrsa build-ca nopass
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/ca.key"
+  
+  - name: rasserver | Build the DH (Diffie-Hellman) key
+    command: /usr/share/easy-rsa/3.0.8/easyrsa gen-dh
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/dh.pem"
+  
+  - name: rasserver | Generate the server sertificate/key
+    shell: echo 'rasvpn' | /usr/share/easy-rsa/3.0.8/easyrsa gen-req server nopass
+#    command: /usr/share/easy-rsa/3.0.8/easyrsa gen-req server nopass
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/private/server.key"
+  
+  - name: rasserver | Get the new CA to sign our server key
+    shell: echo 'yes' | /usr/share/easy-rsa/3.0.8/easyrsa sign-req server server
+#    command: /usr/share/easy-rsa/3.0.8/easyrsa sign-req server server
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/issued/server.crt"
+  
+  - name: rasserver | Generate TA key
+    command: openvpn --genkey --secret ta.key
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/ta.key"
+  
+  - name: rasserver | Create the client keys
+    shell: echo 'client' | /usr/share/easy-rsa/3/easyrsa gen-req client nopass
+#    command: usr/share/easy-rsa/3/easyrsa gen-req client nopass
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/private/client.key"
+  
+  - name: rasserver | Get the certificate authority to sign the client request
+    shell: echo 'yes' | /usr/share/easy-rsa/3/easyrsa sign-req client client
+#    command: /usr/share/easy-rsa/3/easyrsa sign-req client client
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/issued/client.crt"
+  
+  - name: rasserver | copy config file for server
+    copy:
+      src: rasvpn/server.conf
+      dest: /etc/openvpn
+  
+  - name: rasserver | copy config file for server
+    copy: 
+      dest: /etc/openvpn/client/client
+      content: |
+        iroute 192.168.20.0 255.255.255.0
+  
+  - name: rasserver | fetch serts and keys to /tmp/fetched for client
+    fetch:
+      src: "/etc/openvpn/pki/{{ item }}"
+      dest: /tmp/fetched
+    loop:
+    - "ca.crt"
+    - "issued/client.crt"
+    - "private/client.key"
+    
+  - name: rasserver | start openvpn service
+    service: 
+      name: openvpn@server
+      state: restarted
+      enabled: true
+  when: ansible_hostname == "rasserver"
+
+- name: rasclient | Configure for RAS client
+  block:
+  - name: rasclient | copy serts and keys to /tmp/fetched for client
+    copy:
+      src: "/tmp/fetched/rasserver/etc/openvpn/{{ item }}"
+      dest: /etc/openvpn/
+    loop:
+    - "ca.crt"
+    - "issued/client.crt"
+    - "private/client.key"
+  
+  - name: rasclient | copy config file for client
+    copy: 
+      src: rasvpn/client.conf
+      dest: /etc/openvpn/
+  
+  - name: rasclient | start openvpn service
+    service: 
+      name: openvpn@client
+      state: restarted
+      enabled: true
+  
+  - name: rasclient | ping to rasserver by openvpn
+    command: ping -c 4 10.10.20.1
+    register: ping_to_rasvpnserver
+  
+  - name: rasclient | get client ip route
+    command: ip route show
+    register: client_ip_route
+  
+  - name: rasclient | show result of ping to rasserver
+    debug: msg = "{{ ping_to_rasvpnserver }}"
+  
+  - name: rasclient | show result of client ip rooute
+    debug: msg = "{{ client_ip_route }}"
+  when: ansible_hostname == "rasclient"
+

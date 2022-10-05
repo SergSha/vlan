@@ -1,0 +1,136 @@
+---
+# tasks file for vlan
+
+- name: All servers | Install EPEL
+  yum: 
+    name: epel-release
+    state: present
+
+- name: All servers | Install OpenVPN
+  yum:
+    name:
+    - openvpn
+    - iperf3
+    state: present
+
+- name: All servers | Put SELinux in permissive mode, logging actions that would be blocked
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Server | generate server key
+  block:
+  - name: generate server key
+    command: openvpn --genkey --secret /etc/openvpn/static.key
+
+  - name: fetch static.key to /tmp/fetched
+    fetch:
+      src: /etc/openvpn/static.key
+      dest: /tmp/fetched
+  when: ansible_hostname == "server"
+
+- name: Client | copy static.key to client server
+  copy:
+    src: /tmp/fetched/server/etc/openvpn/static.key
+    dest: /etc/openvpn/static.key
+  when: ansible_hostname == "client"
+
+- name: All servers | Configure OpenVPN
+  copy:
+    src: "{{ item }}/{{ item }}.conf"
+    dest: "/etc/openvpn/{{ item }}.conf"
+#  notify: openvpn restart
+  when: ansible_hostname == item
+  loop:
+  - "server"
+  - "client"
+
+- name: OpenVPN service restart
+  service:
+    name: "openvpn@{{ item }}"
+    state: restarted
+    enabled: true
+  when: ansible_hostname == item
+  loop:
+  - "server"
+  - "client"
+
+- name: Client | Ping to OpenVPN Server
+  block:
+  - name: Client | ping to openvpn server
+    command: ping -c 4 10.10.10.1
+    register: ping_to_server
+
+  - name: Client | echo ping result
+    debug: msg="{{ ping_to_server.stdout_lines }}"
+  when: ansible_hostname == "client"
+
+- name: Server | run iperf3
+  command: iperf3 -s &
+  async: 45 # Время на выполнение в фоновом режиме
+  poll: 0   # Переход к след. команде не дожидаясь завершения тек. операции
+  when: ansible_hostname == "server"
+
+- name: Client | iperf3 openvpn with TAP
+  block:
+  - name: Client | get info about TAP network interface
+    command: ip address show dev tap0
+    register: get_ip_tap
+
+  - name: Client | iperf3 openvpn with TAP
+    command: iperf3 -c 10.10.10.1 -t 40 -i 5
+    register: iperf3_result_tap
+
+  - name: Client | show info about TAP network interface
+    debug: msg="{{ get_ip_tap.stdout_lines }}"
+
+  - name: Client | echo iperf3 result of openvpn with TAP
+    debug: msg="{{ iperf3_result_tap.stdout_lines }}"
+  when: ansible_hostname == "client"
+
+- name: Wait 10 sec for the task iperf3 to be finished
+  command: sleep 10
+
+- name: Edit openvpn config file /etc/openvpn/server_and_client.conf
+  lineinfile: 
+    path: "/etc/openvpn/{{ item }}.conf"
+    regexp: '^(.*)dev tap(.*)$'
+    line: 'dev tun'
+    backrefs: yes
+  when: ansible_hostname == item
+  loop:
+  - "server"
+  - "client"  
+
+- name: OpenVPN service restart
+  service:
+    name: "openvpn@{{ item }}"
+    state: restarted
+    enabled: true
+  when: ansible_hostname == item
+  loop:
+  - "server"
+  - "client"
+
+- name: Server | run iperf3
+  command: iperf3 -s &
+  async: 45 # Время на выполнение в фоновом режиме
+  poll: 0   # Переход к след. команде не дожидаясь завершения тек. операции
+  when: ansible_hostname == "server"
+
+- name: Client | iperf3 openvpn with TUN
+  block:
+  - name: Client | get info about TUN network interface
+    command: ip address show dev tun0
+    register: get_ip_tun
+
+  - name: Client | iperf3 openvpn with TUN
+    command: iperf3 -c 10.10.10.1 -t 40 -i 5
+    register: iperf3_result_tun
+
+  - name: Client | show info about TUN network interface
+    debug: msg="{{ get_ip_tun.stdout_lines }}"
+
+  - name: Client | echo iperf3 result of openvpn with TUN
+    debug: msg="{{ iperf3_result_tun.stdout_lines }}"
+  when: ansible_hostname == "client"
