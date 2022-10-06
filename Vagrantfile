@@ -8,6 +8,7 @@ MACHINES = {
     #:public => {:ip => '10.10.10.1', :adapter => 1},
     :net => [
       {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+      {ip: '192.168.255.1', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
       {ip: '192.168.50.11', adapter: 8},
     ]
   },
@@ -16,7 +17,8 @@ MACHINES = {
     :vm_name => "centralRouter",
     :net => [
       {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
-      {ip: '192.168.0.1', adapter: 3, netmask: "255.255.255.240", virtualbox__intnet: "dir-net"},
+      {ip: '192.168.255.2', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+      {ip: '10.10.10.10', adapter: 4, netmask: "255.255.255.0", virtualbox__intnet: "dir-net"},
       {ip: '192.168.50.12', adapter: 8},
     ]
   },
@@ -25,7 +27,6 @@ MACHINES = {
     :vm_name => "testServer1",
     :net => [
       {ip: '10.10.10.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
-      {ip: '192.168.2.1', adapter: 3, netmask: "255.255.255.192", virtualbox__intnet: "dev1-net"},
       {ip: '192.168.50.21', adapter: 8},
     ]
   },
@@ -42,7 +43,6 @@ MACHINES = {
     :vm_name => "testClient1",
     :net => [
       {ip: '10.10.10.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
-      {ip: '192.168.1.1', adapter: 3, netmask: "255.255.255.128", virtualbox__intnet: "dev2-net"},
       {ip: '192.168.50.31', adapter: 8},
     ]
   },
@@ -70,13 +70,13 @@ Vagrant.configure("2") do |config|
         mkdir -p ~root/.ssh
         cp ~vagrant/.ssh/auth* ~root/.ssh
       SHELL
-      if boxconfig[:vm_name] == "testClient2"
-        box.vm.provision "ansible" do |ansible|
-          ansible.playbook = "ansible/playbook.yml"
-          ansible.inventory_path = "ansible/hosts"
-          ansible.host_key_checking = "false"
-          ansible.limit = "all"
-        end
+#      if boxconfig[:vm_name] == "testClient2"
+#        box.vm.provision "ansible" do |ansible|
+#          ansible.playbook = "ansible/playbook.yml"
+#          ansible.inventory_path = "ansible/hosts"
+#          ansible.host_key_checking = "false"
+#          ansible.limit = "all"
+#        end
       end
     end
   end
