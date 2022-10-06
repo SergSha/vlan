@@ -77,7 +77,7 @@ Vagrant.configure("2") do |config|
 #          ansible.host_key_checking = "false"
 #          ansible.limit = "all"
 #        end
-      end
+#      end
     end
   end
 end
