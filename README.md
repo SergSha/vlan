@@ -44,8 +44,8 @@ MACHINES = {
     :vm_name => "inetRouter",
     #:public => {:ip => '10.10.10.1', :adapter => 1},
     :net => [
-      {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
-      {ip: '192.168.255.1', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+      {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "bond-net"},
+      {ip: '192.168.255.1', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "bond-net"},
       {ip: '192.168.50.11', adapter: 8},
     ]
   },
@@ -53,9 +53,9 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "centralRouter",
     :net => [
-      {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
-      {ip: '192.168.255.2', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
-      {ip: '10.10.10.10', adapter: 4, netmask: "255.255.255.0", virtualbox__intnet: "dir-net"},
+      {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "bond-net"},
+      {ip: '192.168.255.2', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "bond-net"},
+      {ip: '10.10.10.10', adapter: 4, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.12', adapter: 8},
     ]
   },
@@ -390,26 +390,30 @@ PEERDNS=no
 <p>Добавим сетевые интерфейсы для vlan100 и vlan101:</p>
 
 <pre>[root@centralRouter ~]# vi /etc/sysconfig/network-scripts/ifcfg-<b>vlan100</b>
-NM_CONTROLLED=no
-BOOTPROTO=static
 ONBOOT=yes
-DEVICE=vlan100
 TYPE=Ethernet
 VLAN=yes
 VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan100
 PHYSDEV=eth3
-VLAN_ID=100</pre>
+VLAN_ID=100
+BOOTPROTO=static
+#IPADDR=10.10.10.10
+#NETMASK=255.255.255.0
+NM_CONTROLLED=no</pre>
 
 <pre>[root@centralRouter ~]# vi /etc/sysconfig/network-scripts/ifcfg-<b>vlan101</b>
-NM_CONTROLLED=no
-BOOTPROTO=static
 ONBOOT=yes
-DEVICE=vlan101
 TYPE=Ethernet
 VLAN=yes
 VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan101
 PHYSDEV=eth3
-VLAN_ID=101</pre>
+VLAN_ID=101
+BOOTPROTO=static
+#IPADDR=10.10.10.10
+#NETMASK=255.255.255.0
+NM_CONTROLLED=no</pre>
 
 <p>Перезапустим network сервис:</p>
 
@@ -428,7 +432,7 @@ VLAN_ID=101</pre>
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
-       valid_lft 85519sec preferred_lft 85519sec
+       valid_lft 86394sec preferred_lft 86394sec
     inet6 fe80::5054:ff:fe4d:77d3/64 scope link
        valid_lft forever preferred_lft forever
 3: <b>eth1</b>: <BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
@@ -446,16 +450,16 @@ VLAN_ID=101</pre>
     inet6 fe80::a00:27ff:fe9b:69a7/64 scope link
        valid_lft forever preferred_lft forever
 40: <b>bond0</b>: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:fc:bb:53 brd ff:ff:ff:ff:ff:ff
+    link/ether 08:00:27:2f:8a:52 brd ff:ff:ff:ff:ff:ff
     inet 192.168.255.2/30 brd 192.168.255.3 scope global bond0
        valid_lft forever preferred_lft forever
     inet6 fe80::a00:27ff:fe2f:8a52/64 scope link
        valid_lft forever preferred_lft forever
-43: <b>vlan100@eth3</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+59: <b>vlan100@eth3</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
     link/ether 08:00:27:fa:38:00 brd ff:ff:ff:ff:ff:ff
     inet6 fe80::a00:27ff:fefa:3800/64 scope link
        valid_lft forever preferred_lft forever
-44: <b>vlan101@eth3</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+60: <b>vlan101@eth3</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
     link/ether 08:00:27:fa:38:00 brd ff:ff:ff:ff:ff:ff
     inet6 fe80::a00:27ff:fefa:3800/64 scope link
        valid_lft forever preferred_lft forever
@@ -489,17 +493,18 @@ PEERDNS=no
 <p>Добавляем сетевой интерфейс для vlan100:</p>
 
 <pre>[root@testServer1 ~]# vi /etc/sysconfig/network-scripts/ifcfg-vlan100
-NM_CONTROLLED=no
-BOOTPROTO=static
 ONBOOT=yes
-IPADDR=10.10.10.1
-NETMASK=255.255.255.0
-DEVICE=vlan100
 TYPE=Ethernet
 VLAN=yes
 VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan100
 PHYSDEV=eth1
-VLAN_ID=100</pre>
+VLAN_ID=100
+BOOTPROTO=static
+IPADDR=10.10.10.1
+NETMASK=255.255.255.0
+#GATEWAY=10.10.10.10
+NM_CONTROLLED=no</pre>
 
 <p>Перезапускаем network сервис:</p>
 
@@ -513,29 +518,29 @@ VLAN_ID=100</pre>
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
+    inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
-       valid_lft 86276sec preferred_lft 86276sec
-    inet6 fe80::5054:ff:fe4d:77d3/64 scope link 
+       valid_lft 86393sec preferred_lft 86393sec
+    inet6 fe80::5054:ff:fe4d:77d3/64 scope link
        valid_lft forever preferred_lft forever
 3: <b>eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:cb:ea:2d brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::a00:27ff:fecb:ea2d/64 scope link 
+    inet6 fe80::a00:27ff:fecb:ea2d/64 scope link
        valid_lft forever preferred_lft forever
 4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:26:4d:d8 brd ff:ff:ff:ff:ff:ff
     inet 192.168.50.21/24 brd 192.168.50.255 scope global noprefixroute eth2
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fe26:4dd8/64 scope link 
+    inet6 fe80::a00:27ff:fe26:4dd8/64 scope link
        valid_lft forever preferred_lft forever
-7: <b>vlan100@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+20: <b>vlan100@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
     link/ether 08:00:27:cb:ea:2d brd ff:ff:ff:ff:ff:ff
     inet 10.10.10.1/24 brd 10.10.10.255 scope global vlan100
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fecb:ea2d/64 scope link 
+    inet6 fe80::a00:27ff:fecb:ea2d/64 scope link
        valid_lft forever preferred_lft forever
 [root@testServer1 ~]#</pre>
 
@@ -569,17 +574,18 @@ PEERDNS=no
 <p>Добавляем сетевой интерфейс для vlan101:</p>
 
 <pre>[root@testServer2 ~]# vi /etc/sysconfig/network-scripts/ifcfg-vlan101
-NM_CONTROLLED=no
-BOOTPROTO=static
 ONBOOT=yes
-IPADDR=10.10.10.1
-NETMASK=255.255.255.0
-DEVICE=vlan101
 TYPE=Ethernet
 VLAN=yes
 VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan101
 PHYSDEV=eth1
-VLAN_ID=101</pre>
+VLAN_ID=101
+BOOTPROTO=static
+IPADDR=10.10.10.1
+NETMASK=255.255.255.0
+#GATEWAY=10.10.10.10
+NM_CONTROLLED=no</pre>
 
 <p>Перезапускаем network сервис:</p>
 
@@ -593,31 +599,29 @@ VLAN_ID=101</pre>
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
+    inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
-       valid_lft 70576sec preferred_lft 70576sec
-    inet6 fe80::5054:ff:fe4d:77d3/64 scope link 
+       valid_lft 86376sec preferred_lft 86376sec
+    inet6 fe80::5054:ff:fe4d:77d3/64 scope link
        valid_lft forever preferred_lft forever
 3: <b>eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:83:66:ee brd ff:ff:ff:ff:ff:ff
-    inet 10.10.10.1/24 brd 10.10.10.255 scope global noprefixroute eth1
-       valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fe83:66ee/64 scope link 
+    inet6 fe80::a00:27ff:fe83:66ee/64 scope link
        valid_lft forever preferred_lft forever
 4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:39:c1:06 brd ff:ff:ff:ff:ff:ff
     inet 192.168.50.22/24 brd 192.168.50.255 scope global noprefixroute eth2
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fe39:c106/64 scope link 
+    inet6 fe80::a00:27ff:fe39:c106/64 scope link
        valid_lft forever preferred_lft forever
-5: <b>vlan101@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+9: <b>vlan101@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
     link/ether 08:00:27:83:66:ee brd ff:ff:ff:ff:ff:ff
     inet 10.10.10.1/24 brd 10.10.10.255 scope global vlan101
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fe83:66ee/64 scope link 
+    inet6 fe80::a00:27ff:fe83:66ee/64 scope link
        valid_lft forever preferred_lft forever
 [root@testServer2 ~]#</pre>
 
@@ -649,17 +653,18 @@ PEERDNS=no
 <p>Добавляем сетевой интерфейс для vlan100:</p>
 
 <pre>[root@testClient1 ~]# vi /etc/sysconfig/network-scripts/ifcfg-vlan100
-NM_CONTROLLED=no
-BOOTPROTO=static
 ONBOOT=yes
-IPADDR=10.10.10.254
-NETMASK=255.255.255.0
-DEVICE=vlan100
 TYPE=Ethernet
 VLAN=yes
 VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan100
 PHYSDEV=eth1
-VLAN_ID=100</pre>
+VLAN_ID=100
+BOOTPROTO=static
+IPADDR=10.10.10.254
+NETMASK=255.255.255.0
+#GATEWAY=10.10.10.10
+NM_CONTROLLED=no</pre>
 
 <p>Перезапускаем network сервис:</p>
 
@@ -673,29 +678,29 @@ VLAN_ID=100</pre>
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
+    inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
-       valid_lft 66993sec preferred_lft 66993sec
-    inet6 fe80::5054:ff:fe4d:77d3/64 scope link 
+       valid_lft 86394sec preferred_lft 86394sec
+    inet6 fe80::5054:ff:fe4d:77d3/64 scope link
        valid_lft forever preferred_lft forever
 3: <b>eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:b4:62:d8 brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::a00:27ff:feb4:62d8/64 scope link 
+    inet6 fe80::a00:27ff:feb4:62d8/64 scope link
        valid_lft forever preferred_lft forever
 4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:eb:2f:95 brd ff:ff:ff:ff:ff:ff
     inet 192.168.50.31/24 brd 192.168.50.255 scope global noprefixroute eth2
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:feeb:2f95/64 scope link 
+    inet6 fe80::a00:27ff:feeb:2f95/64 scope link
        valid_lft forever preferred_lft forever
-6: <b>vlan100@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+8: <b>vlan100@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
     link/ether 08:00:27:b4:62:d8 brd ff:ff:ff:ff:ff:ff
     inet 10.10.10.254/24 brd 10.10.10.255 scope global vlan100
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:feb4:62d8/64 scope link 
+    inet6 fe80::a00:27ff:feb4:62d8/64 scope link
        valid_lft forever preferred_lft forever
 [root@testClient1 ~]#</pre>
 
@@ -727,17 +732,18 @@ PEERDNS=no
 <p>Добавляем сетевой интерфейс для vlan101:</p>
 
 <pre>[root@testClient2 ~]# vi /etc/sysconfig/network-scripts/ifcfg-vlan101
-NM_CONTROLLED=no
-BOOTPROTO=static
 ONBOOT=yes
-IPADDR=10.10.10.254
-NETMASK=255.255.255.0
-DEVICE=vlan101
 TYPE=Ethernet
 VLAN=yes
 VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan101
 PHYSDEV=eth1
-VLAN_ID=101</pre>
+VLAN_ID=101
+BOOTPROTO=static
+IPADDR=10.10.10.254
+NETMASK=255.255.255.0
+#GATEWAY=10.10.10.10
+NM_CONTROLLED=no</pre>
 
 <p>Перезапускаем network сервис:</p>
 
@@ -751,35 +757,33 @@ VLAN_ID=101</pre>
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
+    inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
-       valid_lft 76662sec preferred_lft 76662sec
-    inet6 fe80::5054:ff:fe4d:77d3/64 scope link 
+       valid_lft 86392sec preferred_lft 86392sec
+    inet6 fe80::5054:ff:fe4d:77d3/64 scope link
        valid_lft forever preferred_lft forever
 3: <b>eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:bd:d2:56 brd ff:ff:ff:ff:ff:ff
-    inet 10.10.10.254/24 brd 10.10.10.255 scope global noprefixroute eth1
-       valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:febd:d256/64 scope link 
+    inet6 fe80::a00:27ff:febd:d256/64 scope link
        valid_lft forever preferred_lft forever
 4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:fa:ea:78 brd ff:ff:ff:ff:ff:ff
     inet 192.168.50.32/24 brd 192.168.50.255 scope global noprefixroute eth2
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fefa:ea78/64 scope link 
+    inet6 fe80::a00:27ff:fefa:ea78/64 scope link
        valid_lft forever preferred_lft forever
-5: <b>vlan101@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+6: <b>vlan101@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
     link/ether 08:00:27:bd:d2:56 brd ff:ff:ff:ff:ff:ff
     inet 10.10.10.254/24 brd 10.10.10.255 scope global vlan101
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:febd:d256/64 scope link 
+    inet6 fe80::a00:27ff:febd:d256/64 scope link
        valid_lft forever preferred_lft forever
 [root@testClient2 ~]#</pre>
 
-<p>Установим на сервера traceroute и tcpdump.</p>
+<p>Установим на все сервера traceroute и tcpdump.</p>
 
 
 

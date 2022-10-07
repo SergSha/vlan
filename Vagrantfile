@@ -7,8 +7,8 @@ MACHINES = {
     :vm_name => "inetRouter",
     #:public => {:ip => '10.10.10.1', :adapter => 1},
     :net => [
-      {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
-      {ip: '192.168.255.1', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+      {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "bond-net"},
+      {ip: '192.168.255.1', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "bond-net"},
       {ip: '192.168.50.11', adapter: 8},
     ]
   },
@@ -16,9 +16,9 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "centralRouter",
     :net => [
-      {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
-      {ip: '192.168.255.2', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
-      {ip: '10.10.10.10', adapter: 4, netmask: "255.255.255.0", virtualbox__intnet: "dir-net"},
+      {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "bond-net"},
+      {ip: '192.168.255.2', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "bond-net"},
+      {ip: '10.10.10.10', adapter: 4, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.12', adapter: 8},
     ]
   },
@@ -26,7 +26,7 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "testServer1",
     :net => [
-      {ip: '10.10.10.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
+      {ip: '10.10.10.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.21', adapter: 8},
     ]
   },
@@ -34,7 +34,7 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "testServer2",
     :net => [
-      {ip: '10.10.10.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
+      {ip: '10.10.10.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.22', adapter: 8},
     ]
   },
@@ -42,7 +42,7 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "testClient1",
     :net => [
-      {ip: '10.10.10.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
+      {ip: '10.10.10.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.31', adapter: 8},
     ]
   },
@@ -50,7 +50,7 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "testClient2",
     :net => [
-      {ip: '10.10.10.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
+      {ip: '10.10.10.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.32', adapter: 8},
     ]
   },
