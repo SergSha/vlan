@@ -140,7 +140,9 @@ above with their current state. For more information about a specific
 VM, run `vagrant status NAME`.
 [student@pv-homeworks1-10 vlan]$</pre>
 
-<p></p>
+<h4>inetRouter</h4>
+
+<p>Подключаемся по ssh к серверу inetRouter</p>
 
 <pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh inetRouter
 [vagrant@inetRouter ~]$ sudo -i
@@ -312,6 +314,8 @@ USERCTL=no</pre>
        valid_lft forever preferred_lft forever
 [root@inetRouter ~]#</pre>
 
+<h4>centralRouter</h4>
+
 <p>В отдельном терминале подключимся по ssh к centralRouter:</p>
 
 <pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh centralRouter
@@ -370,8 +374,7 @@ ONBOOT=yes
 BOOTPROTO=static
 BONDING_OPTS="mode=1 miimon=100 fail_over_mac=1"
 NM_CONTROLLED=no
-USERCTL=no
-</pre>
+USERCTL=no</pre>
 
 <p>- <b>ifcfg-eth3</b>:</p>
 
@@ -465,6 +468,8 @@ NM_CONTROLLED=no</pre>
        valid_lft forever preferred_lft forever
 [root@centralRouter ~]#</pre>
 
+<h4>testServer1</h4>
+
 <p>В отдельном терминале подключимся по ssh к testServer1:</p>
 
 <pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh testServer1
@@ -546,6 +551,8 @@ NM_CONTROLLED=no</pre>
 
 <p>Аналогично testServer1 настраиваем настройки сетевых интерфейсов   на серверах testServer2, testClient1, testClient2.</p>
 
+<h4>testServer2</h4>
+
 <p>В отдельном терминале подключимся по ssh к testServer2:</p>
 
 <pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh testServer2
@@ -624,6 +631,8 @@ NM_CONTROLLED=no</pre>
     inet6 fe80::a00:27ff:fe83:66ee/64 scope link
        valid_lft forever preferred_lft forever
 [root@testServer2 ~]#</pre>
+
+<h4>testClient1</h4>
 
 <p>В отдельном терминале подключимся по ssh к testClient1:</p>
 
@@ -704,6 +713,8 @@ NM_CONTROLLED=no</pre>
        valid_lft forever preferred_lft forever
 [root@testClient1 ~]#</pre>
 
+<h4>testClient2</h4>
+
 <p>В отдельном терминале подключимся по ssh к testClient2:</p>
 
 <pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh testClient2
@@ -783,17 +794,9 @@ NM_CONTROLLED=no</pre>
        valid_lft forever preferred_lft forever
 [root@testClient2 ~]#</pre>
 
+<h4>Проверка работы тестового стенда "Bond-Vlan"</h4>
+
 <p>Установим на все сервера traceroute и tcpdump.</p>
-
-
-
-
-
-
-
-
-
-
 
 <p>На сервере centralRouter запустим ping до 8.8.8.8, который будет проходить через сервер inetRouter:</p>
 
