@@ -4,4 +4,4 @@
   become: true
 
   roles:
-    - { role: vpn, when: ansible_system == 'Linux' }
+    - { role: vlan, when: ansible_system == 'Linux' }

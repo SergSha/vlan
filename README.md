@@ -63,7 +63,7 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "testServer1",
     :net => [
-      {ip: '10.10.10.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
+      {ip: '10.10.10.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.21', adapter: 8},
     ]
   },
@@ -71,7 +71,7 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "testServer2",
     :net => [
-      {ip: '10.10.10.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
+      {ip: '10.10.10.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.22', adapter: 8},
     ]
   },
@@ -79,7 +79,7 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "testClient1",
     :net => [
-      {ip: '10.10.10.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
+      {ip: '10.10.10.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.31', adapter: 8},
     ]
   },
@@ -87,7 +87,7 @@ MACHINES = {
     :box_name => "centos/7",
     :vm_name => "testClient2",
     :net => [
-      {ip: '10.10.10.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "net-vlan"},
+      {ip: '10.10.10.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "vlan-net"},
       {ip: '192.168.50.32', adapter: 8},
     ]
   },
@@ -172,8 +172,8 @@ Created symlink from /etc/systemd/system/basic.target.wants/iptables.service to 
 -A INPUT -p icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
-#-A INPUT -j REJECT --reject-with icmp-host-prohibited
-#-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
 COMMIT</pre>
 
 <p>Настроим NAT для выхода в интернет из нашей сети:</p>
