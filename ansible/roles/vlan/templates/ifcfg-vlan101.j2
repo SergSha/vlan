@@ -1,14 +1,14 @@
 ONBOOT=yes
 TYPE=Ethernet
 VLAN=yes
-VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+VLAN_NAME_TYPE=VLAN_PLUS_VID_NO_PAD
 DEVICE=vlan101
 PHYSDEV={% if ansible_hostname == 'centralRouter' %}eth3{% elif ansible_hostname == 'testServer2' or ansible_hostname == 'testClient2' %}eth1{% endif %}
 
 VLAN_ID=101
 BOOTPROTO=static
-{% if ansible_hostname == 'centralRouter' %}#IPADDR=10.10.10.10{% elif ansible_hostname == 'testServer2' %}IPADDR=10.10.10.1{% elif ansible_hostname == 'testClient2' %}IPADDR=10.10.10.254{% endif %}
+{% if ansible_hostname == 'centralRouter' %}IPADDR=10.10.10.10{% elif ansible_hostname == 'testServer2' %}IPADDR=10.10.10.1{% elif ansible_hostname == 'testClient2' %}IPADDR=10.10.10.254{% endif %}
 
-{% if ansible_hostname == 'centralRouter' %}#NETMASK=255.255.255.0{% elif ansible_hostname == 'testServer2' or ansible_hostname == 'testClient2' %}NETMASK=255.255.255.0{% endif %}
+{% if ansible_hostname == 'centralRouter' %}NETMASK=255.255.255.0{% elif ansible_hostname == 'testServer2' or ansible_hostname == 'testClient2' %}NETMASK=255.255.255.0{% endif %}
 
 NM_CONTROLLED=no

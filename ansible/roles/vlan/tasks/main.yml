@@ -116,7 +116,7 @@
       group: root
       mode: 0644
 
-  - name: network restart redhat
+  - name: inetRouter | network restart redhat
     service:
       name: network
       state: restarted
@@ -161,13 +161,13 @@
   - name: centralRouter | comment lines with IPADDR
     replace:
       path: /etc/sysconfig/network-scripts/ifcfg-eth3
-      regexp: '^(.*)IPADDR(.*)$'
+      regexp: '^(.*IPADDR.*)$'
       replace: '#\1'
 
   - name: centralRouter | comment lines with NETMASK
     replace:
       path: /etc/sysconfig/network-scripts/ifcfg-eth3
-      regexp: '^(.*)NETMASK(.*)$'
+      regexp: '^(.*NETMASK.*)$'
       replace: '#\1'
 
   - name: centralRouter | template network config file of vlan100
@@ -202,13 +202,13 @@
   - name: testServers and testClients | comment lines with IPADDR
     replace:
       path: /etc/sysconfig/network-scripts/ifcfg-eth1
-      regexp: '^(.*)IPADDR(.*)$'
+      regexp: '^(.*IPADDR.*)$'
       replace: '#\1'
 
   - name: testServers and testClients | comment lines with NETMASK
     replace:
       path: /etc/sysconfig/network-scripts/ifcfg-eth1
-      regexp: '^(.*)NETMASK(.*)$'
+      regexp: '^(.*NETMASK.*)$'
       replace: '#\1'
 
   - name: testServers and testClients | template network config file of vlan100
