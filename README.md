@@ -274,7 +274,7 @@ USERCTL=no</pre>
 <p>Добавим route config файл route-bond0:</p>
 
 <pre>[root@inetRouter ~]# vi /etc/sysconfig/network-scripts/route-bond0
-192.168.0.0/16 via 192.168.255.2</pre>
+10.10.10.0/24 via 192.168.255.2</pre>
 
 <p>Перезапустим network сервис:</p>
 
@@ -503,8 +503,8 @@ NM_CONTROLLED=no</pre>
 NM_CONTROLLED=yes
 BOOTPROTO=none
 ONBOOT=yes
-#IPADDR=10.10.10.1
-#NETMASK=255.255.255.0
+<b>#IPADDR=10.10.10.1</b>
+<b>#NETMASK=255.255.255.0</b>
 DEVICE=eth1
 PEERDNS=no
 #VAGRANT-END</pre>
@@ -588,8 +588,8 @@ NM_CONTROLLED=no</pre>
 NM_CONTROLLED=yes
 BOOTPROTO=none
 ONBOOT=yes
-#IPADDR=10.10.10.1
-#NETMASK=255.255.255.0
+<b>#IPADDR=10.10.10.1</b>
+<b>#NETMASK=255.255.255.0</b>
 DEVICE=eth1
 PEERDNS=no
 #VAGRANT-END</pre>
@@ -670,8 +670,8 @@ NM_CONTROLLED=no</pre>
 NM_CONTROLLED=yes
 BOOTPROTO=none
 ONBOOT=yes
-#IPADDR=10.10.10.254
-#NETMASK=255.255.255.0
+<b>#IPADDR=10.10.10.254</b>
+<b>#NETMASK=255.255.255.0</b>
 DEVICE=eth1
 PEERDNS=no
 #VAGRANT-END</pre>
@@ -752,8 +752,8 @@ NM_CONTROLLED=no</pre>
 NM_CONTROLLED=yes
 BOOTPROTO=none
 ONBOOT=yes
-#IPADDR=10.10.10.254
-#NETMASK=255.255.255.0
+<b>#IPADDR=10.10.10.254</b>
+<b>#NETMASK=255.255.255.0</b>
 DEVICE=eth1
 PEERDNS=no
 #VAGRANT-END</pre>
@@ -814,6 +814,8 @@ NM_CONTROLLED=no</pre>
 [root@testClient2 ~]#</pre>
 
 <h4>Проверка работы тестового стенда "Bond-Vlan"</h4>
+
+<p><b>&#10033; Bond:</b></p>
 
 <p>Установим на все сервера traceroute и tcpdump.</p>
 
@@ -970,7 +972,9 @@ tcpdump: listening on eth2, link-type EN10MB (Ethernet), capture size 262144 byt
 0 packets dropped by kernel
 [root@inetRouter ~]#</pre>
 
-<p>Как мы видим, после отключения интерфейса eth1 пакеты пошли через интерфейс eth2, то есть соединение bond между серверами inetRouter и centralRouter работает.</p>
+<p>Как мы видим, после отключения интерфейса eth1 пакеты пошли через интерфейс eth2, то есть соединение bond между серверами inetRouter и centralRouter сохраняется и работает.</p>
+
+<p><b>&#10033; Vlan:</b></p>
 
 <p>Запустим на сервере testClient1 ping до 10.10.10.1, чтобы понять, на какой сервер (testServer1 или testServer2) пойдут пакеты:</p>
 
