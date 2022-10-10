@@ -809,7 +809,7 @@ NM_CONTROLLED=no</pre>
        valid_lft forever preferred_lft forever
 [root@testClient2 ~]#</pre>
 
-<h4>Проверка работы тестового стенда "Bond-Vlan"</h4>
+<h4>2. Проверка работы тестового стенда "Bond-Vlan"</h4>
 
 <p><b>&bull; Bond:</b></p>
 
