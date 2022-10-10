@@ -284,7 +284,7 @@ USERCTL=no</pre>
 <p>Смотрим список сетевых интерфейсов:</p>
 
 <pre>[root@inetRouter ~]# ip -d a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
@@ -429,7 +429,7 @@ NM_CONTROLLED=no</pre>
 <p>Смотрим список сетевых интерфейсов:</p>
 
 <pre>[root@centralRouter ~]# ip -d a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
@@ -438,19 +438,17 @@ NM_CONTROLLED=no</pre>
 2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
-       valid_lft 81891sec preferred_lft 81891sec
+       valid_lft 86359sec preferred_lft 86359sec
     inet6 fe80::5054:ff:fe4d:77d3/64 scope link 
        valid_lft forever preferred_lft forever
 3: <b>eth1</b>: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
     link/ether 08:00:27:82:05:2d brd ff:ff:ff:ff:ff:ff promiscuity 0 
-    bond_slave state ACTIVE mii_status UP link_failure_count 0 perm_hwaddr 08:00:27:82:05:2d queue_id 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
-4: eth2: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
+    <b>bond_slave state ACTIVE mii_status UP link_failure_count 0 perm_hwaddr 08:00:27:82:05:2d queue_id 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
+4: <b>eth2</b>: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
     link/ether 08:00:27:1f:a0:e3 brd ff:ff:ff:ff:ff:ff promiscuity 0 
-    bond_slave state BACKUP mii_status UP link_failure_count 0 perm_hwaddr 08:00:27:1f:a0:e3 queue_id 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+    <b>bond_slave state BACKUP mii_status UP link_failure_count 0 perm_hwaddr 08:00:27:1f:a0:e3 queue_id 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
 5: <b>eth3</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:95:31:7d brd ff:ff:ff:ff:ff:ff promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
-    inet 10.10.10.10/24 brd 10.10.10.255 scope global noprefixroute eth3
-       valid_lft forever preferred_lft forever
     inet6 fe80::a00:27ff:fe95:317d/64 scope link 
        valid_lft forever preferred_lft forever
 6: eth4: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
@@ -469,18 +467,14 @@ NM_CONTROLLED=no</pre>
 8: <b>vlan100@eth3</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
     link/ether 08:00:27:95:31:7d brd ff:ff:ff:ff:ff:ff promiscuity 0 
     <b>vlan protocol 802.1Q id 100 &lt;REORDER_HDR&gt; numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
-    inet 10.10.10.10/24 brd 10.10.10.255 scope global vlan100
-       valid_lft forever preferred_lft forever
     inet6 fe80::a00:27ff:fe95:317d/64 scope link 
        valid_lft forever preferred_lft forever
 9: <b>vlan101@eth3</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
     link/ether 08:00:27:95:31:7d brd ff:ff:ff:ff:ff:ff promiscuity 0 
     <b>vlan protocol 802.1Q id 101 &lt;REORDER_HDR&gt; numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
-    inet 10.10.10.10/24 brd 10.10.10.255 scope global vlan101
-       valid_lft forever preferred_lft forever
     inet6 fe80::a00:27ff:fe95:317d/64 scope link 
        valid_lft forever preferred_lft forever
-[root@centralRouter ~]#</pre>
+[root@centralRouter ~]# </pre>
 
 <h4>testServer1</h4>
 
@@ -533,7 +527,7 @@ NM_CONTROLLED=no</pre>
 <p>Смотрим список сетевых интерфейсов:</p>
 
 <pre>[root@testServer1 ~]# ip -d a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
@@ -618,7 +612,7 @@ NM_CONTROLLED=no</pre>
 <p>Смотрим список сетевых интерфейсов:</p>
 
 <pre>[root@testServer2 ~]# ip -d a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
@@ -700,7 +694,7 @@ NM_CONTROLLED=no</pre>
 <p>Смотрим список сетевых интерфейсов:</p>
 
 <pre>[root@testClient1 ~]# ip -d a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
@@ -782,7 +776,7 @@ NM_CONTROLLED=no</pre>
 <p>Смотрим список сетевых интерфейсов:</p>
 
 <pre>[root@testClient2 ~]# ip -d a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
