@@ -815,7 +815,7 @@ NM_CONTROLLED=no</pre>
 
 <h4>Проверка работы тестового стенда "Bond-Vlan"</h4>
 
-<p><b>&#10033; Bond:</b></p>
+<p><b>&bull; Bond:</b></p>
 
 <p>Установим на все сервера traceroute и tcpdump.</p>
 
@@ -974,7 +974,7 @@ tcpdump: listening on eth2, link-type EN10MB (Ethernet), capture size 262144 byt
 
 <p>Как мы видим, после отключения интерфейса eth1 пакеты пошли через интерфейс eth2, то есть соединение bond между серверами inetRouter и centralRouter сохраняется и работает.</p>
 
-<p><b>&#10033; Vlan:</b></p>
+<p><b>&bull; Vlan:</b></p>
 
 <p>Запустим на сервере testClient1 ping до 10.10.10.1, чтобы понять, на какой сервер (testServer1 или testServer2) пойдут пакеты:</p>
 
