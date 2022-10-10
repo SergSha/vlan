@@ -283,34 +283,37 @@ USERCTL=no</pre>
 
 <p>Смотрим список сетевых интерфейсов:</p>
 
-<pre>[root@inetRouter ~]# ip a
+<pre>[root@inetRouter ~]# ip -d a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host
+    inet6 ::1/128 scope host 
        valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
-       valid_lft 84845sec preferred_lft 84845sec
-    inet6 fe80::5054:ff:fe4d:77d3/64 scope link
+       valid_lft 81495sec preferred_lft 81495sec
+    inet6 fe80::5054:ff:fe4d:77d3/64 scope link 
        valid_lft forever preferred_lft forever
-3: <b>eth1</b>: <BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
-    link/ether 08:00:27:95:5c:6b brd ff:ff:ff:ff:ff:ff
-4: <b>eth2</b>: <BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
-    link/ether 08:00:27:8d:ab:9a brd ff:ff:ff:ff:ff:ff
-5: eth3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 08:00:27:f4:ba:52 brd ff:ff:ff:ff:ff:ff
+3: <b>eth1</b>: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
+    link/ether 08:00:27:f3:37:2d brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>bond_slave state ACTIVE mii_status UP link_failure_count 0 perm_hwaddr 08:00:27:f3:37:2d queue_id 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
+4: <b>eth2</b>: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
+    link/ether 08:00:27:bc:fb:e7 brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>bond_slave state BACKUP mii_status UP link_failure_count 0 perm_hwaddr 08:00:27:bc:fb:e7 queue_id 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
+5: <b>eth3</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:7c:27:06 brd ff:ff:ff:ff:ff:ff promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
     inet 192.168.50.11/24 brd 192.168.50.255 scope global noprefixroute eth3
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fef4:ba52/64 scope link
+    inet6 fe80::a00:27ff:fe7c:2706/64 scope link 
        valid_lft forever preferred_lft forever
-8: <b>bond0</b>: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:95:5c:6b brd ff:ff:ff:ff:ff:ff
+6: <b>bond0</b>: &lt;BROADCAST,MULTICAST,MASTER,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:f3:37:2d brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>bond mode active-backup active_slave eth1 miimon 100 updelay 0 downdelay 0 use_carrier 1 arp_interval 0 arp_validate none arp_all_targets any primary_reselect always fail_over_mac active xmit_hash_policy layer2 resend_igmp 1 num_grat_arp 1 all_slaves_active 0 min_links 0 lp_interval 1 packets_per_slave 1 lacp_rate slow ad_select stable tlb_dynamic_lb 1 numtxqueues 16 numrxqueues 16 gso_max_size 65536 gso_max_segs 65535</b> 
     inet 192.168.255.1/30 brd 192.168.255.3 scope global bond0
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fe95:5c6b/64 scope link
+    inet6 fe80::a00:27ff:fef3:372d/64 scope link 
        valid_lft forever preferred_lft forever
 [root@inetRouter ~]#</pre>
 
@@ -425,46 +428,57 @@ NM_CONTROLLED=no</pre>
 
 <p>Смотрим список сетевых интерфейсов:</p>
 
-<pre>[root@centralRouter ~]# ip a
+<pre>[root@centralRouter ~]# ip -d a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host
+    inet6 ::1/128 scope host 
        valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
-       valid_lft 86394sec preferred_lft 86394sec
-    inet6 fe80::5054:ff:fe4d:77d3/64 scope link
+       valid_lft 81891sec preferred_lft 81891sec
+    inet6 fe80::5054:ff:fe4d:77d3/64 scope link 
        valid_lft forever preferred_lft forever
-3: <b>eth1</b>: <BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
-    link/ether 08:00:27:2f:8a:52 brd ff:ff:ff:ff:ff:ff
-4: <b>eth2</b>: <BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
-    link/ether 08:00:27:fc:bb:53 brd ff:ff:ff:ff:ff:ff
-5: <b>eth3</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 08:00:27:fa:38:00 brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::a00:27ff:fefa:3800/64 scope link
+3: <b>eth1</b>: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
+    link/ether 08:00:27:82:05:2d brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    bond_slave state ACTIVE mii_status UP link_failure_count 0 perm_hwaddr 08:00:27:82:05:2d queue_id 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+4: eth2: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000
+    link/ether 08:00:27:1f:a0:e3 brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    bond_slave state BACKUP mii_status UP link_failure_count 0 perm_hwaddr 08:00:27:1f:a0:e3 queue_id 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+5: <b>eth3</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:95:31:7d brd ff:ff:ff:ff:ff:ff promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+    inet 10.10.10.10/24 brd 10.10.10.255 scope global noprefixroute eth3
        valid_lft forever preferred_lft forever
-6: eth4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 08:00:27:9b:69:a7 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::a00:27ff:fe95:317d/64 scope link 
+       valid_lft forever preferred_lft forever
+6: eth4: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:e5:d4:0c brd ff:ff:ff:ff:ff:ff promiscuity 0 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
     inet 192.168.50.12/24 brd 192.168.50.255 scope global noprefixroute eth4
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fe9b:69a7/64 scope link
+    inet6 fe80::a00:27ff:fee5:d40c/64 scope link 
        valid_lft forever preferred_lft forever
-40: <b>bond0</b>: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:2f:8a:52 brd ff:ff:ff:ff:ff:ff
+7: <b>bond0</b>: &lt;BROADCAST,MULTICAST,MASTER,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:82:05:2d brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>bond mode active-backup active_slave eth1 miimon 100 updelay 0 downdelay 0 use_carrier 1 arp_interval 0 arp_validate none arp_all_targets any primary_reselect always fail_over_mac active xmit_hash_policy layer2 resend_igmp 1 num_grat_arp 1 all_slaves_active 0 min_links 0 lp_interval 1 packets_per_slave 1 lacp_rate slow ad_select stable tlb_dynamic_lb 1 numtxqueues 16 numrxqueues 16 gso_max_size 65536 gso_max_segs 65535</b> 
     inet 192.168.255.2/30 brd 192.168.255.3 scope global bond0
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fe2f:8a52/64 scope link
+    inet6 fe80::a00:27ff:fe82:52d/64 scope link 
        valid_lft forever preferred_lft forever
-59: <b>vlan100@eth3</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:fa:38:00 brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::a00:27ff:fefa:3800/64 scope link
+8: <b>vlan100@eth3</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:95:31:7d brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>vlan protocol 802.1Q id 100 &lt;REORDER_HDR&gt; numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
+    inet 10.10.10.10/24 brd 10.10.10.255 scope global vlan100
        valid_lft forever preferred_lft forever
-60: <b>vlan101@eth3</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:fa:38:00 brd ff:ff:ff:ff:ff:ff
-    inet6 fe80::a00:27ff:fefa:3800/64 scope link
+    inet6 fe80::a00:27ff:fe95:317d/64 scope link 
+       valid_lft forever preferred_lft forever
+9: <b>vlan101@eth3</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:95:31:7d brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>vlan protocol 802.1Q id 101 &lt;REORDER_HDR&gt; numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
+    inet 10.10.10.10/24 brd 10.10.10.255 scope global vlan101
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe95:317d/64 scope link 
        valid_lft forever preferred_lft forever
 [root@centralRouter ~]#</pre>
 
@@ -518,35 +532,37 @@ NM_CONTROLLED=no</pre>
 
 <p>Смотрим список сетевых интерфейсов:</p>
 
-<pre>[root@testServer1 ~]# ip a
+<pre>[root@testServer1 ~]# ip -d a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
     inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
        valid_lft 86393sec preferred_lft 86393sec
     inet6 fe80::5054:ff:fe4d:77d3/64 scope link
        valid_lft forever preferred_lft forever
-3: <b>eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+3: <b>eth1</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:cb:ea:2d brd ff:ff:ff:ff:ff:ff
     inet6 fe80::a00:27ff:fecb:ea2d/64 scope link
        valid_lft forever preferred_lft forever
-4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+4: eth2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:26:4d:d8 brd ff:ff:ff:ff:ff:ff
     inet 192.168.50.21/24 brd 192.168.50.255 scope global noprefixroute eth2
        valid_lft forever preferred_lft forever
     inet6 fe80::a00:27ff:fe26:4dd8/64 scope link
        valid_lft forever preferred_lft forever
-20: <b>vlan100@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:cb:ea:2d brd ff:ff:ff:ff:ff:ff
+5: <b>vlan100@eth1</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:93:84:cf brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>vlan protocol 802.1Q id 100 &lt;REORDER_HDR&gt; numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
     inet 10.10.10.1/24 brd 10.10.10.255 scope global vlan100
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fecb:ea2d/64 scope link
+    inet6 fe80::a00:27ff:fe93:84cf/64 scope link 
        valid_lft forever preferred_lft forever
+
 [root@testServer1 ~]#</pre>
 
 <p>Аналогично testServer1 настраиваем настройки сетевых интерфейсов   на серверах testServer2, testClient1, testClient2.</p>
@@ -601,34 +617,35 @@ NM_CONTROLLED=no</pre>
 
 <p>Смотрим список сетевых интерфейсов:</p>
 
-<pre>[root@testServer2 ~]# ip a
+<pre>[root@testServer2 ~]# ip -d a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
     inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
        valid_lft 86376sec preferred_lft 86376sec
     inet6 fe80::5054:ff:fe4d:77d3/64 scope link
        valid_lft forever preferred_lft forever
-3: <b>eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+3: <b>eth1</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:83:66:ee brd ff:ff:ff:ff:ff:ff
     inet6 fe80::a00:27ff:fe83:66ee/64 scope link
        valid_lft forever preferred_lft forever
-4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+4: eth2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:39:c1:06 brd ff:ff:ff:ff:ff:ff
     inet 192.168.50.22/24 brd 192.168.50.255 scope global noprefixroute eth2
        valid_lft forever preferred_lft forever
     inet6 fe80::a00:27ff:fe39:c106/64 scope link
        valid_lft forever preferred_lft forever
-9: <b>vlan101@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:83:66:ee brd ff:ff:ff:ff:ff:ff
+5: <b>vlan101@eth1</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:58:e0:f3 brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>vlan protocol 802.1Q id 101 &lt;REORDER_HDR&gt; numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
     inet 10.10.10.1/24 brd 10.10.10.255 scope global vlan101
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fe83:66ee/64 scope link
+    inet6 fe80::a00:27ff:fe58:e0f3/64 scope link 
        valid_lft forever preferred_lft forever
 [root@testServer2 ~]#</pre>
 
@@ -682,34 +699,35 @@ NM_CONTROLLED=no</pre>
 
 <p>Смотрим список сетевых интерфейсов:</p>
 
-<pre>[root@testClient1 ~]# ip a
+<pre>[root@testClient1 ~]# ip -d a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
     inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
        valid_lft 86394sec preferred_lft 86394sec
     inet6 fe80::5054:ff:fe4d:77d3/64 scope link
        valid_lft forever preferred_lft forever
-3: <b>eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+3: <b>eth1</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:b4:62:d8 brd ff:ff:ff:ff:ff:ff
     inet6 fe80::a00:27ff:feb4:62d8/64 scope link
        valid_lft forever preferred_lft forever
-4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+4: eth2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:eb:2f:95 brd ff:ff:ff:ff:ff:ff
     inet 192.168.50.31/24 brd 192.168.50.255 scope global noprefixroute eth2
        valid_lft forever preferred_lft forever
     inet6 fe80::a00:27ff:feeb:2f95/64 scope link
        valid_lft forever preferred_lft forever
-8: <b>vlan100@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:b4:62:d8 brd ff:ff:ff:ff:ff:ff
+5: <b>vlan100@eth1</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:c3:fc:bc brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>vlan protocol 802.1Q id 100 &lt;REORDER_HDR&gt; numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
     inet 10.10.10.254/24 brd 10.10.10.255 scope global vlan100
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:feb4:62d8/64 scope link
+    inet6 fe80::a00:27ff:fec3:fcbc/64 scope link 
        valid_lft forever preferred_lft forever
 [root@testClient1 ~]#</pre>
 
@@ -763,34 +781,35 @@ NM_CONTROLLED=no</pre>
 
 <p>Смотрим список сетевых интерфейсов:</p>
 
-<pre>[root@testClient2 ~]# ip a
+<pre>[root@testClient2 ~]# ip -d a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
     inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 52:54:00:4d:77:d3 brd ff:ff:ff:ff:ff:ff
     inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
        valid_lft 86392sec preferred_lft 86392sec
     inet6 fe80::5054:ff:fe4d:77d3/64 scope link
        valid_lft forever preferred_lft forever
-3: <b>eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+3: <b>eth1</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:bd:d2:56 brd ff:ff:ff:ff:ff:ff
     inet6 fe80::a00:27ff:febd:d256/64 scope link
        valid_lft forever preferred_lft forever
-4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+4: eth2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:fa:ea:78 brd ff:ff:ff:ff:ff:ff
     inet 192.168.50.32/24 brd 192.168.50.255 scope global noprefixroute eth2
        valid_lft forever preferred_lft forever
     inet6 fe80::a00:27ff:fefa:ea78/64 scope link
        valid_lft forever preferred_lft forever
-6: <b>vlan101@eth1</b>: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:bd:d2:56 brd ff:ff:ff:ff:ff:ff
+5: <b>vlan101@eth1</b>: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:cf:60:e4 brd ff:ff:ff:ff:ff:ff promiscuity 0 
+    <b>vlan protocol 802.1Q id 101 &lt;REORDER_HDR&gt; numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</b> 
     inet 10.10.10.254/24 brd 10.10.10.255 scope global vlan101
        valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:febd:d256/64 scope link
+    inet6 fe80::a00:27ff:fecf:60e4/64 scope link 
        valid_lft forever preferred_lft forever
 [root@testClient2 ~]#</pre>
 
@@ -800,70 +819,156 @@ NM_CONTROLLED=no</pre>
 
 <p>На сервере centralRouter запустим ping до 8.8.8.8, который будет проходить через сервер inetRouter:</p>
 
-<pre>[root@centralRouter ~]# ping 8.8.8.8
+<pre>[root@<b>centralRouter</b> ~]# ping 8.8.8.8
 PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
-64 bytes from 8.8.8.8: icmp_seq=1 ttl=61 time=9.84 ms
-64 bytes from 8.8.8.8: icmp_seq=2 ttl=61 time=8.73 ms
-64 bytes from 8.8.8.8: icmp_seq=3 ttl=61 time=9.07 ms
-64 bytes from 8.8.8.8: icmp_seq=4 ttl=61 time=8.84 ms
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=61 time=32.7 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=61 time=29.0 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=61 time=30.2 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=61 time=28.1 ms
 ^C
 --- 8.8.8.8 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3005ms
-rtt min/avg/max/mdev = 8.732/9.124/9.847/0.440 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3006ms
+rtt min/avg/max/mdev = 28.166/30.048/32.744/1.729 ms
 [root@centralRouter ~]#</pre>
 
-<pre>[root@centralRouter ~]# tcpdump -i eth1
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
-06:36:41.459293 IP centralRouter > dns.google: ICMP echo request, id 9571, seq 1, length 64
-06:36:41.469109 IP dns.google > centralRouter: ICMP echo reply, id 9571, seq 1, length 64
-06:36:42.461708 IP centralRouter > dns.google: ICMP echo request, id 9571, seq 2, length 64
-06:36:42.470391 IP dns.google > centralRouter: ICMP echo reply, id 9571, seq 2, length 64
-06:36:43.463505 IP centralRouter > dns.google: ICMP echo request, id 9571, seq 3, length 64
-06:36:43.472546 IP dns.google > centralRouter: ICMP echo reply, id 9571, seq 3, length 64
-06:36:44.465040 IP centralRouter > dns.google: ICMP echo request, id 9571, seq 4, length 64
-06:36:44.473839 IP dns.google > centralRouter: ICMP echo reply, id 9571, seq 4, length 64
-06:36:46.463878 ARP, Request who-has gateway tell centralRouter, length 28
-06:36:46.466651 ARP, Reply gateway is-at 08:00:27:95:5c:6b (oui Unknown), length 46</pre>
+<p>На сервере inetRouter запустим tcpdump на интерфейсах bond0, eth1, eth2:</p>
 
-<pre>[root@centralRouter ~]# tcpdump -i eth2
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on eth2, link-type EN10MB (Ethernet), capture size 262144 bytes</pre>
+<pre>[root@<b>inetRouter</b> ~]# tcpdump -nvvv -e -i <b>bond0</b>
+tcpdump: listening on bond0, link-type EN10MB (Ethernet), capture size 262144 bytes
+19:01:35.656780 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 25373, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24508, seq 1, length 64
+19:01:35.688995 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 20962, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24508, seq 1, length 64
+19:01:36.659820 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 26330, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24508, seq 2, length 64
+19:01:36.687620 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 20967, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24508, seq 2, length 64
+19:01:37.661557 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 26409, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24508, seq 3, length 64
+19:01:37.690437 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 20972, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24508, seq 3, length 64
+19:01:38.663490 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 26646, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24508, seq 4, length 64
+19:01:38.690206 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 20977, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24508, seq 4, length 64
+19:01:40.662474 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype ARP (0x0806), length 60: Ethernet (len 6), IPv4 (len 4), Request who-has 192.168.255.1 tell 192.168.255.2, length 46
+19:01:40.662531 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Reply 192.168.255.1 is-at 08:00:27:f3:37:2d, length 28
+^C
+10 packets captured
+10 packets received by filter
+0 packets dropped by kernel
+[root@inetRouter ~]#</pre>
 
-<p>Отключим сетевой интерфейс et2:</p>
+<pre>[root@<b>inetRouter</b> ~]# tcpdump -nvvv -e -i <b>eth1</b>
+tcpdump: listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
+19:01:35.656780 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 25373, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24508, seq 1, length 64
+19:01:35.689004 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 20962, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24508, seq 1, length 64
+19:01:36.659820 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 26330, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24508, seq 2, length 64
+19:01:36.687645 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 20967, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24508, seq 2, length 64
+19:01:37.661557 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 26409, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24508, seq 3, length 64
+19:01:37.690467 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 20972, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24508, seq 3, length 64
+19:01:38.663490 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 26646, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24508, seq 4, length 64
+19:01:38.690231 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 20977, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24508, seq 4, length 64
+19:01:40.662474 08:00:27:82:05:2d > 08:00:27:f3:37:2d, ethertype ARP (0x0806), length 60: Ethernet (len 6), IPv4 (len 4), Request who-has 192.168.255.1 tell 192.168.255.2, length 46
+19:01:40.662538 08:00:27:f3:37:2d > 08:00:27:82:05:2d, ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Reply 192.168.255.1 is-at 08:00:27:f3:37:2d, length 28
+^C
+10 packets captured
+10 packets received by filter
+0 packets dropped by kernel
+[root@inetRouter ~]#</pre>
 
-<pre>[root@centralRouter ~]# ip l set dev eth1 down
-[root@centralRouter ~]#</pre>
+<pre>[root@<b>inetRouter</b> ~]# tcpdump -nvvv -e -i <b>eth2</b>
+tcpdump: listening on eth2, link-type EN10MB (Ethernet), capture size 262144 bytes
+^C
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+[root@inetRouter ~]#</pre>
 
-<p>Снова запустим ping:</p>
+<p>Как мы наблюдаем, ping проходит, в данном случае, через интерфейс eth1.</p>
 
-<pre>[root@centralRouter ~]# ping 8.8.8.8
+<p>Теперь на сервере inetRouter отключим сетевой интерфейс eth1:</p>
+
+<pre>[root@<b>inetRouter</b> ~]# ip l set dev eth1 down
+[root@inetRouter ~]#</pre>
+
+<p>И снова повторим:</p>
+
+<pre>[root@<b>centralRouter</b> ~]# ping 8.8.8.8
 PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
-64 bytes from 8.8.8.8: icmp_seq=1 ttl=61 time=9.23 ms
-64 bytes from 8.8.8.8: icmp_seq=2 ttl=61 time=8.83 ms
-64 bytes from 8.8.8.8: icmp_seq=3 ttl=61 time=9.20 ms
-64 bytes from 8.8.8.8: icmp_seq=4 ttl=61 time=9.14 ms
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=61 time=28.1 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=61 time=25.1 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=61 time=27.6 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=61 time=27.9 ms
 ^C
 --- 8.8.8.8 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3005ms
-rtt min/avg/max/mdev = 8.839/9.105/9.239/0.184 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3006ms
+rtt min/avg/max/mdev = 25.148/27.217/28.113/1.204 ms
 [root@centralRouter ~]#</pre>
 
-<pre>[root@centralRouter ~]# tcpdump -i eth1
+<pre>[root@<b>inetRouter</b> ~]# tcpdump -nvvv -e -i <b>bond0</b>
+tcpdump: listening on bond0, link-type EN10MB (Ethernet), capture size 262144 bytes
+19:13:19.762685 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 50249, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24517, seq 1, length 64
+19:13:19.789540 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 21440, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24517, seq 1, length 64
+19:13:20.763962 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 50893, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24517, seq 2, length 64
+19:13:20.788805 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 21445, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24517, seq 2, length 64
+19:13:21.766694 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 51063, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24517, seq 3, length 64
+19:13:21.793039 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 21450, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24517, seq 3, length 64
+19:13:22.769066 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 51658, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24517, seq 4, length 64
+19:13:22.795772 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 21455, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24517, seq 4, length 64
+19:13:24.758662 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype ARP (0x0806), length 60: Ethernet (len 6), IPv4 (len 4), Request who-has 192.168.255.1 tell 192.168.255.2, length 46
+19:13:24.758782 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Reply 192.168.255.1 is-at 08:00:27:bc:fb:e7, length 28
+^C
+10 packets captured
+10 packets received by filter
+0 packets dropped by kernel
+[root@inetRouter ~]#</pre>
+
+<pre>[root@<b>inetRouter</b> ~]# tcpdump -nvvv -e -i <b>eth1</b>
 tcpdump: eth1: That device is not up
-[root@centralRouter ~]#</pre>
+[root@inetRouter ~]#</pre>
 
-<pre>[root@centralRouter ~]# tcpdump -i eth2
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on eth2, link-type EN10MB (Ethernet), capture size 262144 bytes
-06:40:44.510464 IP centralRouter > dns.google: ICMP echo request, id 9575, seq 1, length 64
-06:40:44.519667 IP dns.google > centralRouter: ICMP echo reply, id 9575, seq 1, length 64
-06:40:45.512336 IP centralRouter > dns.google: ICMP echo request, id 9575, seq 2, length 64
-06:40:45.521146 IP dns.google > centralRouter: ICMP echo reply, id 9575, seq 2, length 64
-06:40:46.514041 IP centralRouter > dns.google: ICMP echo request, id 9575, seq 3, length 64
-06:40:46.523167 IP dns.google > centralRouter: ICMP echo reply, id 9575, seq 3, length 64
-06:40:47.516081 IP centralRouter > dns.google: ICMP echo request, id 9575, seq 4, length 64
-06:40:47.525191 IP dns.google > centralRouter: ICMP echo reply, id 9575, seq 4, length 64</pre>
+<pre>[root@<b>inetRouter</b> ~]# tcpdump -nvvv -e -i <b>eth2</b>
+tcpdump: listening on eth2, link-type EN10MB (Ethernet), capture size 262144 bytes
+19:13:19.762685 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 50249, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24517, seq 1, length 64
+19:13:19.789565 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 21440, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24517, seq 1, length 64
+19:13:20.763962 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 50893, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24517, seq 2, length 64
+19:13:20.788814 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 21445, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24517, seq 2, length 64
+19:13:21.766694 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 51063, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24517, seq 3, length 64
+19:13:21.793075 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 21450, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24517, seq 3, length 64
+19:13:22.769066 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 64, id 51658, offset 0, flags [DF], proto ICMP (1), length 84)
+    192.168.255.2 > 8.8.8.8: ICMP echo request, id 24517, seq 4, length 64
+19:13:22.795797 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype IPv4 (0x0800), length 98: (tos 0x0, ttl 61, id 21455, offset 0, flags [DF], proto ICMP (1), length 84)
+    8.8.8.8 > 192.168.255.2: ICMP echo reply, id 24517, seq 4, length 64
+19:13:24.758662 08:00:27:1f:a0:e3 > 08:00:27:bc:fb:e7, ethertype ARP (0x0806), length 60: Ethernet (len 6), IPv4 (len 4), Request who-has 192.168.255.1 tell 192.168.255.2, length 46
+19:13:24.758791 08:00:27:bc:fb:e7 > 08:00:27:1f:a0:e3, ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Reply 192.168.255.1 is-at 08:00:27:bc:fb:e7, length 28
+^C
+10 packets captured
+10 packets received by filter
+0 packets dropped by kernel
+[root@inetRouter ~]#</pre>
 
 <p>Как мы видим, после отключения интерфейса eth1 пакеты пошли через интерфейс eth2, то есть соединение bond между серверами inetRouter и centralRouter работает.</p>
 
@@ -871,36 +976,51 @@ listening on eth2, link-type EN10MB (Ethernet), capture size 262144 bytes
 
 <pre>[root@<b>testClient1</b> ~]# ping 10.10.10.1
 PING 10.10.10.1 (10.10.10.1) 56(84) bytes of data.
-64 bytes from 10.10.10.1: icmp_seq=1 ttl=64 time=4.54 ms
-64 bytes from 10.10.10.1: icmp_seq=2 ttl=64 time=1.43 ms
-64 bytes from 10.10.10.1: icmp_seq=3 ttl=64 time=1.31 ms
-
+64 bytes from 10.10.10.1: icmp_seq=1 ttl=64 time=1.38 ms
+64 bytes from 10.10.10.1: icmp_seq=2 ttl=64 time=1.36 ms
+64 bytes from 10.10.10.1: icmp_seq=3 ttl=64 time=1.24 ms
+64 bytes from 10.10.10.1: icmp_seq=4 ttl=64 time=1.30 ms
+^C
 --- 10.10.10.1 ping statistics ---
-3 packets transmitted, 3 received, 0% packet loss, time 2004ms
-rtt min/avg/max/mdev = 1.314/2.432/4.543/1.493 ms
-[root@testClient1 ~]# ^C
+4 packets transmitted, 4 received, 0% packet loss, time 3009ms
+rtt min/avg/max/mdev = 1.245/1.325/1.389/0.070 ms
 [root@testClient1 ~]#</pre>
 
 <p>На серверах testServer1 и testServer2 запустим команды tcpdump:</p>
 
-<pre>[root@<b>testServer1</b> ~]# tcpdump -i eth1
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
-07:43:40.730399 IP 10.10.10.254 > testServer1: ICMP echo request, id 24594, seq 1, length 64
-07:43:40.730564 ARP, Request who-has 10.10.10.254 tell testServer1, length 28
-07:43:40.732737 ARP, Reply 10.10.10.254 is-at 08:00:27:b4:62:d8 (oui Unknown), length 46
-07:43:40.732749 IP testServer1 > 10.10.10.254: ICMP echo reply, id 24594, seq 1, length 64
-07:43:41.731764 IP 10.10.10.254 > testServer1: ICMP echo request, id 24594, seq 2, length 64
-07:43:41.731805 IP testServer1 > 10.10.10.254: ICMP echo reply, id 24594, seq 2, length 64
-07:43:42.734222 IP 10.10.10.254 > testServer1: ICMP echo request, id 24594, seq 3, length 64
-07:43:42.734270 IP testServer1 > 10.10.10.254: ICMP echo reply, id 24594, seq 3, length 64
-07:43:46.739843 ARP, Request who-has testServer1 tell 10.10.10.254, length 46
-07:43:46.739881 ARP, Reply testServer1 is-at 08:00:27:cb:ea:2d (oui Unknown), length 28</pre>
+<pre>[root@<b>testServer1</b> ~]# tcpdump -nvvv -e -i eth1
+tcpdump: listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
+18:37:38.661666 08:00:27:c3:fc:bc > 08:00:27:93:84:cf, ethertype 802.1Q (0x8100), length 102: vlan 100, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 42672, offset 0, flags [DF], proto ICMP (1), length 84)
+    10.10.10.254 > 10.10.10.1: ICMP echo request, id 23202, seq 1, length 64
+18:37:38.661805 08:00:27:93:84:cf > 08:00:27:c3:fc:bc, ethertype 802.1Q (0x8100), length 102: vlan 100, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 30947, offset 0, flags [none], proto ICMP (1), length 84)
+    10.10.10.1 > 10.10.10.254: ICMP echo reply, id 23202, seq 1, length 64
+18:37:39.663366 08:00:27:c3:fc:bc > 08:00:27:93:84:cf, ethertype 802.1Q (0x8100), length 102: vlan 100, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 43056, offset 0, flags [DF], proto ICMP (1), length 84)
+    10.10.10.254 > 10.10.10.1: ICMP echo request, id 23202, seq 2, length 64
+18:37:39.663459 08:00:27:93:84:cf > 08:00:27:c3:fc:bc, ethertype 802.1Q (0x8100), length 102: vlan 100, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 31902, offset 0, flags [none], proto ICMP (1), length 84)
+    10.10.10.1 > 10.10.10.254: ICMP echo reply, id 23202, seq 2, length 64
+18:37:40.666895 08:00:27:c3:fc:bc > 08:00:27:93:84:cf, ethertype 802.1Q (0x8100), length 102: vlan 100, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 43762, offset 0, flags [DF], proto ICMP (1), length 84)
+    10.10.10.254 > 10.10.10.1: ICMP echo request, id 23202, seq 3, length 64
+18:37:40.666985 08:00:27:93:84:cf > 08:00:27:c3:fc:bc, ethertype 802.1Q (0x8100), length 102: vlan 100, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 32111, offset 0, flags [none], proto ICMP (1), length 84)
+    10.10.10.1 > 10.10.10.254: ICMP echo reply, id 23202, seq 3, length 64
+18:37:41.669854 08:00:27:c3:fc:bc > 08:00:27:93:84:cf, ethertype 802.1Q (0x8100), length 102: vlan 100, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 44416, offset 0, flags [DF], proto ICMP (1), length 84)
+    10.10.10.254 > 10.10.10.1: ICMP echo request, id 23202, seq 4, length 64
+18:37:41.669928 08:00:27:93:84:cf > 08:00:27:c3:fc:bc, ethertype 802.1Q (0x8100), length 102: vlan 100, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 32706, offset 0, flags [none], proto ICMP (1), length 84)
+    10.10.10.1 > 10.10.10.254: ICMP echo reply, id 23202, seq 4, length 64
+18:37:43.671228 08:00:27:93:84:cf > 08:00:27:c3:fc:bc, ethertype 802.1Q (0x8100), length 46: vlan 100, p 0, ethertype ARP, Ethernet (len 6), IPv4 (len 4), Request who-has 10.10.10.254 tell 10.10.10.1, length 28
+18:37:43.672540 08:00:27:c3:fc:bc > 08:00:27:93:84:cf, ethertype 802.1Q (0x8100), length 64: vlan 100, p 0, ethertype ARP, Ethernet (len 6), IPv4 (len 4), Reply 10.10.10.254 is-at 08:00:27:c3:fc:bc, length 46
+^C
+10 packets captured
+10 packets received by filter
+0 packets dropped by kernel
+[root@testServer1 ~]#</pre>
 
-<pre>[root@<b>testServer2</b> ~]# tcpdump -i eth1
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
-07:43:40.721701 ARP, Request who-has 10.10.10.254 tell testServer2, length 46</pre>
+<pre>[root@<b>testServer2</b> ~]# tcpdump -nvvv -e -i eth1
+tcpdump: listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
+^C
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+[root@testServer2 ~]#</pre>
 
 <p>Как мы наблюдаем, icmp пакеты с сервера testClient1 шли именно на сервер testServer1, то есть по vlan100.</p>
 
@@ -908,38 +1028,51 @@ listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
 
 <pre>[root@<b>testClient2</b> ~]# ping 10.10.10.1
 PING 10.10.10.1 (10.10.10.1) 56(84) bytes of data.
-64 bytes from 10.10.10.1: icmp_seq=1 ttl=64 time=4.48 ms
-64 bytes from 10.10.10.1: icmp_seq=2 ttl=64 time=1.49 ms
-64 bytes from 10.10.10.1: icmp_seq=3 ttl=64 time=1.43 ms
-64 bytes from 10.10.10.1: icmp_seq=4 ttl=64 time=1.40 ms
+64 bytes from 10.10.10.1: icmp_seq=1 ttl=64 time=0.409 ms
+64 bytes from 10.10.10.1: icmp_seq=2 ttl=64 time=1.79 ms
+64 bytes from 10.10.10.1: icmp_seq=3 ttl=64 time=1.19 ms
+64 bytes from 10.10.10.1: icmp_seq=4 ttl=64 time=1.49 ms
 ^C
 --- 10.10.10.1 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3005ms
-rtt min/avg/max/mdev = 1.404/2.204/4.484/1.317 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 0.409/1.221/1.790/0.516 ms
 [root@testClient2 ~]#</pre>
 
 <p>На серверах testServer1 и testServer2 запустим команды tcpdump:</p>
 
-<pre>[root@<b>testServer1</b> ~]# tcpdump -i eth1
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
-07:56:47.264136 ARP, Request who-has 10.10.10.254 tell testServer1, length 46</pre>
+<pre>[root@<b>testServer1</b> ~]# tcpdump -nvvv -e -i eth1
+tcpdump: listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
+^C
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+[root@testServer1 ~]#</pre>
 
-<pre>[root@<b>testServer2</b> ~]# tcpdump -i eth1
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
-07:56:47.255303 IP 10.10.10.254 > testServer2: ICMP echo request, id 23124, seq 1, length 64
-07:56:47.255481 ARP, Request who-has 10.10.10.254 tell testServer2, length 28
-07:56:47.258479 ARP, Reply 10.10.10.254 is-at 08:00:27:bd:d2:56 (oui Unknown), length 46
-07:56:47.258487 IP testServer2 > 10.10.10.254: ICMP echo reply, id 23124, seq 1, length 64
-07:56:48.257238 IP 10.10.10.254 > testServer2: ICMP echo request, id 23124, seq 2, length 64
-07:56:48.257288 IP testServer2 > 10.10.10.254: ICMP echo reply, id 23124, seq 2, length 64
-07:56:49.258912 IP 10.10.10.254 > testServer2: ICMP echo request, id 23124, seq 3, length 64
-07:56:49.258966 IP testServer2 > 10.10.10.254: ICMP echo reply, id 23124, seq 3, length 64
-07:56:50.261067 IP 10.10.10.254 > testServer2: ICMP echo request, id 23124, seq 4, length 64
-07:56:50.261131 IP testServer2 > 10.10.10.254: ICMP echo reply, id 23124, seq 4, length 64
-07:56:53.271864 ARP, Request who-has testServer2 tell 10.10.10.254, length 46
-07:56:53.271885 ARP, Reply testServer2 is-at 08:00:27:83:66:ee (oui Unknown), length 28</pre>
+<pre>[root@<b>testServer2</b> ~]# tcpdump -nvvv -e -i eth1
+tcpdump: listening on eth1, link-type EN10MB (Ethernet), capture size 262144 bytes
+18:43:52.230819 08:00:27:cf:60:e4 > 08:00:27:58:e0:f3, ethertype 802.1Q (0x8100), length 102: vlan 101, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 64270, offset 0, flags [DF], proto ICMP (1), length 84)
+    10.10.10.254 > 10.10.10.1: ICMP echo request, id 23200, seq 1, length 64
+18:43:52.230869 08:00:27:58:e0:f3 > 08:00:27:cf:60:e4, ethertype 802.1Q (0x8100), length 102: vlan 101, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 63040, offset 0, flags [none], proto ICMP (1), length 84)
+    10.10.10.1 > 10.10.10.254: ICMP echo reply, id 23200, seq 1, length 64
+18:43:53.231548 08:00:27:cf:60:e4 > 08:00:27:58:e0:f3, ethertype 802.1Q (0x8100), length 102: vlan 101, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 64451, offset 0, flags [DF], proto ICMP (1), length 84)
+    10.10.10.254 > 10.10.10.1: ICMP echo request, id 23200, seq 2, length 64
+18:43:53.231631 08:00:27:58:e0:f3 > 08:00:27:cf:60:e4, ethertype 802.1Q (0x8100), length 102: vlan 101, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 63116, offset 0, flags [none], proto ICMP (1), length 84)
+    10.10.10.1 > 10.10.10.254: ICMP echo reply, id 23200, seq 2, length 64
+18:43:54.233535 08:00:27:cf:60:e4 > 08:00:27:58:e0:f3, ethertype 802.1Q (0x8100), length 102: vlan 101, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 64783, offset 0, flags [DF], proto ICMP (1), length 84)
+    10.10.10.254 > 10.10.10.1: ICMP echo request, id 23200, seq 3, length 64
+18:43:54.233605 08:00:27:58:e0:f3 > 08:00:27:cf:60:e4, ethertype 802.1Q (0x8100), length 102: vlan 101, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 63498, offset 0, flags [none], proto ICMP (1), length 84)
+    10.10.10.1 > 10.10.10.254: ICMP echo reply, id 23200, seq 3, length 64
+18:43:55.235338 08:00:27:cf:60:e4 > 08:00:27:58:e0:f3, ethertype 802.1Q (0x8100), length 102: vlan 101, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 65005, offset 0, flags [DF], proto ICMP (1), length 84)
+    10.10.10.254 > 10.10.10.1: ICMP echo request, id 23200, seq 4, length 64
+18:43:55.235573 08:00:27:58:e0:f3 > 08:00:27:cf:60:e4, ethertype 802.1Q (0x8100), length 102: vlan 101, p 0, ethertype IPv4, (tos 0x0, ttl 64, id 64405, offset 0, flags [none], proto ICMP (1), length 84)
+    10.10.10.1 > 10.10.10.254: ICMP echo reply, id 23200, seq 4, length 64
+18:43:57.243354 08:00:27:cf:60:e4 > 08:00:27:58:e0:f3, ethertype 802.1Q (0x8100), length 64: vlan 101, p 0, ethertype ARP, Ethernet (len 6), IPv4 (len 4), Request who-has 10.10.10.1 tell 10.10.10.254, length 46
+18:43:57.243463 08:00:27:58:e0:f3 > 08:00:27:cf:60:e4, ethertype 802.1Q (0x8100), length 46: vlan 101, p 0, ethertype ARP, Ethernet (len 6), IPv4 (len 4), Reply 10.10.10.1 is-at 08:00:27:58:e0:f3, length 28
+^C
+10 packets captured
+10 packets received by filter
+0 packets dropped by kernel
+[root@testServer2 ~]#</pre>
 
 <p>Здесь как мы видим, icmp пакеты с сервера testClient2 уже идут на сервер testServer2, то есть по vlan101.</p>
 
