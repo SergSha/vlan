@@ -70,14 +70,14 @@ Vagrant.configure("2") do |config|
         mkdir -p ~root/.ssh
         cp ~vagrant/.ssh/auth* ~root/.ssh
       SHELL
-#      if boxconfig[:vm_name] == "testClient2"
-#        box.vm.provision "ansible" do |ansible|
-#          ansible.playbook = "ansible/playbook.yml"
-#          ansible.inventory_path = "ansible/hosts"
-#          ansible.host_key_checking = "false"
-#          ansible.limit = "all"
-#        end
-#      end
+      if boxconfig[:vm_name] == "testClient2"
+        box.vm.provision "ansible" do |ansible|
+          ansible.playbook = "ansible/playbook.yml"
+          ansible.inventory_path = "ansible/hosts"
+          ansible.host_key_checking = "false"
+          ansible.limit = "all"
+        end
+      end
     end
   end
 end

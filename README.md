@@ -19,6 +19,8 @@ testClient2 <-> testServer2<br />
 
 <p>Формат сдачи ДЗ: vagrant + ansible</p>
 
+<img src="network.png" alt="network.png" />
+
 <h4>1. Работа со стендом и настройка VLAN</h4>
 
 <p>В домашней директории создадим директорию vlan, в котором будут храниться настройки виртуальных машин:</p>
