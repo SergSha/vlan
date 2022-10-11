@@ -829,7 +829,7 @@ PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 rtt min/avg/max/mdev = 28.166/30.048/32.744/1.729 ms
 [root@centralRouter ~]#</pre>
 
-<p>На сервере inetRouter запустим tcpdump на интерфейсах bond0, eth1, eth2:</p>
+<p>На сервере inetRouter запустим в отдельных терминалах tcpdump на интерфейсах bond0, eth1, eth2:</p>
 
 <pre>[root@<b>inetRouter</b> ~]# tcpdump -nvvv -e -i <b>bond0</b>
 tcpdump: listening on bond0, link-type EN10MB (Ethernet), capture size 262144 bytes

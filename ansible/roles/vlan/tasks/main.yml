@@ -1,7 +1,7 @@
 ---
 # tasks file for vlan
 
-- name: All Routers | Install and configure
+- name: All Routers
   block:
   - name: All Routers | set up forward packages across routers
     lineinfile:
@@ -42,7 +42,7 @@
     update_cache: yes
   when: ansible_os_family == "Debian"
 
-- name: inetRouter | Set up NAT
+- name: inetRouter
   block:
   - name: inetRouter | install iptables
     yum:
@@ -113,16 +113,16 @@
       owner: root
       group: root
       mode: 0644
-    notify:
-    - network restart redhat
+#    notify:
+#    - network restart redhat
 
-#  - name: inetRouter | network restart redhat
-#    service:
-#      name: network
-#      state: restarted
+  - name: inetRouter | network restart redhat
+    service:
+      name: network
+      state: restarted
   when: ansible_hostname == "inetRouter"
 
-- name: centralRouter | Setup network setting
+- name: centralRouter
   block:
   - name: centralRouter | disable default route
     lineinfile:
@@ -185,16 +185,16 @@
       owner: root
       group: root
       mode: 0644
-    notify:
-    - network restart redhat
+#    notify:
+#    - network restart redhat
 
-#  - name: centralRouter | network restart redhat
-#    service:
-#      name: network
-#      state: restarted
+  - name: centralRouter | network restart redhat
+    service:
+      name: network
+      state: restarted
   when: ansible_hostname == "centralRouter"
 
-- name: testServers and testClients | Setup vlan network setting
+- name: testServers and testClients
   block:
   - name: testServers and testClients | disable default route
     lineinfile:
@@ -215,30 +215,44 @@
   when: "'servers_all' in group_names"
 #  when: "'routers' not in group_names"
 
-- name: testServers and testClients | template network config file of vlan100
-  template:
-    src: ifcfg-vlan100.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-vlan100
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-  - network restart redhat
+- name: vlan100
+  block:
+  - name: vlan100 | template network config file of vlan100
+    template:
+      src: ifcfg-vlan100.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-vlan100
+      owner: root
+      group: root
+      mode: 0644
+#    notify:
+#    - network restart redhat
+
+  - name: vlan100 | network restart redhat
+    service:
+      name: network
+      state: restarted
   when: "'vlan100' in group_names"
 
-- name: testServers and testClients | template network config file of vlan101
-  template:
-    src: ifcfg-vlan101.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-vlan101
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-  - network restart redhat
+- name: vlan101
+  block:
+  - name: vlan101 | template network config file of vlan101
+    template:
+      src: ifcfg-vlan101.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-vlan101
+      owner: root
+      group: root
+      mode: 0644
+#    notify:
+#    - network restart redhat
+
+  - name: vlan101 | network restart redhat
+    service:
+      name: network
+      state: restarted
   when: "'vlan101' in group_names"
 
-#  - name: testServers and testClients | network restart redhat
-#    service:
-#      name: network
-#      state: restarted
+- name: All Redhat Servers | network restart redhat
+  service:
+    name: network
+    state: restarted
 
