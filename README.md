@@ -123,11 +123,11 @@ end</pre>
 
 <p>Запустим эти виртуальные машины:</p>
 
-<pre>[student@pv-homeworks1-10 vlan]$ vagrant up</pre>
+<pre>[user@localhost vlan]$ vagrant up</pre>
 
 <p>Состояние запущенных виртуальных машин:</p>
 
-<pre>[student@pv-homeworks1-10 vlan]$ vagrant status
+<pre>[user@localhost vlan]$ vagrant status
 Current machine states:
 
 inetRouter                running (virtualbox)
@@ -140,13 +140,13 @@ testClient2               running (virtualbox)
 This environment represents multiple VMs. The VMs are all listed
 above with their current state. For more information about a specific
 VM, run `vagrant status NAME`.
-[student@pv-homeworks1-10 vlan]$</pre>
+[user@localhost vlan]$</pre>
 
 <h4>inetRouter</h4>
 
 <p>Подключаемся по ssh к серверу inetRouter</p>
 
-<pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh inetRouter
+<pre>[user@localhost vlan]$ vagrant ssh inetRouter
 [vagrant@inetRouter ~]$ sudo -i
 [root@inetRouter ~]#</pre>
 
@@ -323,7 +323,7 @@ USERCTL=no</pre>
 
 <p>В отдельном терминале подключимся по ssh к centralRouter:</p>
 
-<pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh centralRouter
+<pre>[user@localhost vlan]$ vagrant ssh centralRouter
 [vagrant@centralRouter ~]$ sudo -i
 [root@centralRouter ~]#</pre>
 
@@ -482,7 +482,7 @@ NM_CONTROLLED=no</pre>
 
 <p>В отдельном терминале подключимся по ssh к testServer1:</p>
 
-<pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh testServer1
+<pre>[user@localhost vlan]$ vagrant ssh testServer1
 [vagrant@testServer1 ~]$ sudo -i
 [root@testServer1 ~]#</pre>
 
@@ -567,7 +567,7 @@ NM_CONTROLLED=no</pre>
 
 <p>В отдельном терминале подключимся по ssh к testServer2:</p>
 
-<pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh testServer2
+<pre>[user@localhost vlan]$ vagrant ssh testServer2
 [vagrant@testServer2 ~]$ sudo -i
 [root@testServer2 ~]#</pre>
 
@@ -649,7 +649,7 @@ NM_CONTROLLED=no</pre>
 
 <p>В отдельном терминале подключимся по ssh к testClient1:</p>
 
-<pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh testClient1
+<pre>[user@localhost vlan]$ vagrant ssh testClient1
 [vagrant@testClient1 ~]$ sudo -i
 [root@testClient1 ~]#</pre>
 
@@ -731,7 +731,7 @@ NM_CONTROLLED=no</pre>
 
 <p>В отдельном терминале подключимся по ssh к testClient2:</p>
 
-<pre>[student@pv-homeworks1-10 vlan]$ vagrant ssh testClient2
+<pre>[user@localhost vlan]$ vagrant ssh testClient2
 [vagrant@testClient2 ~]$ sudo -i
 [root@testClient2 ~]#</pre>
 
