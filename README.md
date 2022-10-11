@@ -236,7 +236,7 @@ net.ipv4.conf.all.forwarding = 1
 [root@inetRouter ~]#</pre>
 
 <p>Изменим настройки сетевых интерфейсов:<br />
-- <b>ifcfg-eth1</b>:</p>
+- ifcfg-eth1:</p>
 
 <pre>[root@inetRouter ~]# vi /etc/sysconfig/network-scripts/ifcfg-eth1
 DEVICE=eth1
@@ -247,7 +247,7 @@ SLAVE=yes
 NM_CONTROLLED=no
 USERCTL=no</pre>
 
-<p>- <b>ifcfg-eth2</b>:</p>
+<p>- ifcfg-eth2:</p>
 
 <pre>[root@inetRouter ~]# vi /etc/sysconfig/network-scripts/ifcfg-eth2
 DEVICE=eth2
@@ -258,7 +258,7 @@ SLAVE=yes
 NM_CONTROLLED=no
 USERCTL=no</pre>
 
-<p>Создадим <b>ifcfg-bond0</b>:</p>
+<p>Создадим ifcfg-bond0:</p>
 
 <pre>[root@inetRouter ~]# vi /etc/sysconfig/network-scripts/ifcfg-bond0
 DEVICE=bond0
@@ -343,7 +343,7 @@ net.ipv4.conf.all.forwarding = 1
 
 <p>Также как и на сервере inetRouter внесём изменения в сетевых интерфейсах:</p>
 
-<p>- <b>ifcfg-eth1</b>:</p>
+<p>- ifcfg-eth1:</p>
 
 <pre>[root@centralRouter ~]# vi /etc/sysconfig/network-scripts/ifcfg-eth1
 DEVICE=eth1
@@ -354,7 +354,7 @@ SLAVE=yes
 NM_CONTROLLED=no
 USERCTL=no</pre>
 
-<p>- <b>ifcfg-eth2</b>:</p>
+<p>- ifcfg-eth2:</p>
 
 <pre>[root@centralRouter ~]# vi /etc/sysconfig/network-scripts/ifcfg-eth2
 DEVICE=eth2
@@ -365,7 +365,7 @@ SLAVE=yes
 NM_CONTROLLED=no
 USERCTL=no</pre>
 
-<p>- добавляем сетевой интерфейс<b>ifcfg-bond0</b>:</p>
+<p>- добавляем сетевой интерфейс ifcfg-bond0:</p>
 
 <pre>[root@centralRouter ~]# vi /etc/sysconfig/network-scripts/ifcfg-bond0
 DEVICE=bond0
@@ -381,7 +381,7 @@ BONDING_OPTS="mode=1 miimon=100 fail_over_mac=1"
 NM_CONTROLLED=no
 USERCTL=no</pre>
 
-<p>- <b>ifcfg-eth3</b>:</p>
+<p>- ifcfg-eth3:</p>
 
 <pre>[root@centralRouter ~]# vi /etc/sysconfig/network-scripts/ifcfg-eth3
 #VAGRANT-BEGIN
@@ -1076,6 +1076,6 @@ tcpdump: listening on eth1, link-type EN10MB (Ethernet), capture size 262144 byt
 
 <p>Здесь как мы видим, icmp пакеты с сервера testClient2 уже идут на сервер testServer2, то есть по vlan101.</p>
 
-<h4>Как запустить стенд "Bomd-Vlan"</h4>
+<h4>Как запустить стенд "Bond-Vlan"</h4>
 
 <pre>git clone https://github.com/SergSha/vlan.git && cd ./vlan/ && vagrant up</pre>
