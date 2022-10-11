@@ -1076,6 +1076,6 @@ tcpdump: listening on eth1, link-type EN10MB (Ethernet), capture size 262144 byt
 
 <p>Здесь как мы видим, icmp пакеты с сервера testClient2 уже идут на сервер testServer2, то есть по vlan101.</p>
 
+<h4>Как запустить стенд "Bomd-Vlan"</h4>
 
-
-
+<pre>git clone https://github.com/SergSha/vlan.git && cd ./vlan/ && vagrant up</pre>

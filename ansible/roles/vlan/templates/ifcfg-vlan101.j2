@@ -11,4 +11,6 @@ BOOTPROTO=static
 
 {% if ansible_hostname == 'centralRouter' %}#NETMASK=255.255.255.0{% elif ansible_hostname == 'testServer2' or ansible_hostname == 'testClient2' %}NETMASK=255.255.255.0{% endif %}
 
+{% if ansible_hostname == 'centralRouter' %}#GATEWAY=10.10.10.10{% elif ansible_hostname == 'testServer1' or ansible_hostname == 'testClient1' %}#GATEWAY=10.10.10.10{% endif %}
+
 NM_CONTROLLED=no

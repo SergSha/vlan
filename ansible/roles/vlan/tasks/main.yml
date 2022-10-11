@@ -64,9 +64,7 @@
       state: restarted
       enabled: true
 
-#  - name: inetRouter | add masquerade
-#    command: iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
-
+#   command: iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
   - name: inetRouter | add masquerade
     iptables:
       table: nat 
@@ -115,11 +113,13 @@
       owner: root
       group: root
       mode: 0644
+    notify:
+    - network restart redhat
 
-  - name: inetRouter | network restart redhat
-    service:
-      name: network
-      state: restarted
+#  - name: inetRouter | network restart redhat
+#    service:
+#      name: network
+#      state: restarted
   when: ansible_hostname == "inetRouter"
 
 - name: centralRouter | Setup network setting
@@ -185,12 +185,14 @@
       owner: root
       group: root
       mode: 0644
+    notify:
+    - network restart redhat
 
-  - name: centralRouter | network restart redhat
-    service:
-      name: network
-      state: restarted
-  when: (ansible_hostname == "centralRouter")
+#  - name: centralRouter | network restart redhat
+#    service:
+#      name: network
+#      state: restarted
+  when: ansible_hostname == "centralRouter"
 
 - name: testServers and testClients | Setup vlan network setting
   block:
@@ -210,40 +212,33 @@
       path: /etc/sysconfig/network-scripts/ifcfg-eth1
       regexp: '^(.*NETMASK.*)$'
       replace: '#\1'
+  when: "'servers_all' in group_names"
+#  when: "'routers' not in group_names"
 
-  - name: testServers and testClients | template network config file of vlan100
-    template:
-      src: ifcfg-vlan100.j2
-      dest: /etc/sysconfig/network-scripts/ifcfg-vlan100
-      owner: root
-      group: root
-      mode: 0644
-    when: ansible_hostname == "testServer1" or ansible_hostname == "testClient1"
+- name: testServers and testClients | template network config file of vlan100
+  template:
+    src: ifcfg-vlan100.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-vlan100
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+  - network restart redhat
+  when: "'vlan100' in group_names"
 
-  - name: testServers and testClients | template network config file of vlan101
-    template:
-      src: ifcfg-vlan101.j2
-      dest: /etc/sysconfig/network-scripts/ifcfg-vlan101
-      owner: root
-      group: root
-      mode: 0644
-    when: ansible_hostname == "testServer2" or ansible_hostname == "testClient2"
+- name: testServers and testClients | template network config file of vlan101
+  template:
+    src: ifcfg-vlan101.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-vlan101
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+  - network restart redhat
+  when: "'vlan101' in group_names"
 
-  - name: testServers and testClients | add default gateway for centralServer
-    lineinfile:
-      path: /etc/sysconfig/network-scripts/ifcfg-vlan100
-      line: GATEWAY=10.10.10.10
-    when: ansible_hostname == "testServer1" or ansible_hostname == "testClient1"
-
-  - name: testServers and testClients | add default gateway for centralServer
-    lineinfile:
-      path: /etc/sysconfig/network-scripts/ifcfg-vlan101
-      line: GATEWAY=10.10.10.10
-    when: ansible_hostname == "testServer2" or ansible_hostname == "testClient2"
-
-  - name: testServers and testClients | network restart redhat
-    service:
-      name: network
-      state: restarted
-  when: (ansible_hostname == "testServer1") or (ansible_hostname == "testServer2") or (ansible_hostname == "testClient1") or (ansible_hostname == "testClient2")
+#  - name: testServers and testClients | network restart redhat
+#    service:
+#      name: network
+#      state: restarted
 

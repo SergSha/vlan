@@ -1,3 +1,7 @@
 ---
 # handlers file for vlan
 
+- name: network restart redhat
+  service:
+    name: network
+    state: restarted
